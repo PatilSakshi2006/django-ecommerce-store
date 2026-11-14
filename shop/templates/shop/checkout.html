@@ -1,0 +1,6 @@
+{% extends 'shop/base.html' %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">ALMOST THERE</p><h1>Checkout</h1></div>
+<div class="checkout-layout"><form method="post" class="form-card">{% csrf_token %}<h2>Delivery details</h2><label>Full name<input name="full_name" required value="{{ request.user.get_full_name }}"></label><label>Email address<input type="email" name="email" required value="{{ request.user.email }}"></label><label>Phone number<input name="phone" required type="tel" pattern="[0-9+\-\s]{8,20}"></label><label>Delivery address<textarea name="address" rows="4" required></textarea></label><button class="btn btn-primary btn-full" type="submit">Place order · ₹{{ total }}</button><p class="small-muted">Demo only: this creates an order; no payment is taken.</p></form><aside class="summary-card"><h3>Your items</h3>{% for item in items %}<div class="summary-row"><span>{{ item.product.name }} × {{ item.quantity }}</span><strong>₹{{ item.line_total }}</strong></div>{% endfor %}<div class="summary-row total-row"><span>Total</span><strong>₹{{ total }}</strong></div></aside></div>
+{% endblock %}

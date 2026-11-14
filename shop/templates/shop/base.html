@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ShopEase{% endblock %} | ShopEase</title>
+  <link rel="stylesheet" href="{% static 'shop/style.css' %}">
+  <script defer src="{% static 'shop/app.js' %}"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="brand" href="{% url 'home' %}"><span class="brand-mark">S</span> ShopEase</a>
+    <form class="search" action="{% url 'home' %}" method="get">
+      <input type="search" name="q" placeholder="Search products..." value="{{ query|default:'' }}">
+      <button type="submit" aria-label="Search">⌕</button>
+    </form>
+    <nav>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'cart' %}">Cart</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'order_history' %}">My Orders</a>
+        <span class="nav-user">Hi, {{ user.username }}</span>
+        <form class="inline-form" action="{% url 'logout' %}" method="post">{% csrf_token %}<button class="nav-button">Logout</button></form>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a class="nav-signup" href="{% url 'register' %}">Sign up</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+<main class="container">
+  {% if messages %}<div class="messages">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+<footer><p>© {% now "Y" %} ShopEase · A simple Django e-commerce demo</p></footer>
+</body>
+</html>

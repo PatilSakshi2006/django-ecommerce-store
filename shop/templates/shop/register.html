@@ -1,0 +1,3 @@
+{% extends 'shop/base.html' %}
+{% block title %}Create account{% endblock %}
+{% block content %}<div class="auth-wrap"><form method="post" class="form-card auth-card">{% csrf_token %}<p class="eyebrow">JOIN SHOPEASE</p><h1>Create account</h1><p class="muted">Create an account to place orders and track them.</p>{{ form.non_field_errors }}{% for field in form %}<label>{{ field.label }}{{ field }}{% if field.help_text %}<small class="help-text">{{ field.help_text|safe }}</small>{% endif %}{{ field.errors }}</label>{% endfor %}<button class="btn btn-primary btn-full">Create account</button><p class="auth-switch">Already registered? <a href="{% url 'login' %}">Login</a></p></form></div>{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'shop/base.html' %}
+{% block title %}Discover products{% endblock %}
+{% block content %}
+<section class="hero">
+  <div><p class="eyebrow">THE EVERYDAY STORE</p><h1>Find something<br><span>you’ll love.</span></h1><p class="hero-copy">Thoughtful picks for your everyday life. Browse our collection and shop with ease.</p><a class="btn btn-light" href="#products">Explore collection <span>→</span></a></div>
+  <div class="hero-art"><div class="hero-circle"></div><div class="hero-note">GOOD FINDS.<br>GREAT DAYS.</div><div class="hero-spark">✳</div></div>
+</section>
+<section id="products" class="section-heading"><div><p class="eyebrow">OUR COLLECTION</p><h2>{% if query %}Search results{% else %}Popular products{% endif %}</h2></div><span class="muted">{{ products|length }} products</span></section>
+<div class="product-grid">
+  {% for product in products %}
+  <article class="product-card">
+    <a class="product-image" href="{% url 'product_detail' product.slug %}">
+      {% if product.image_url %}<img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy">{% else %}<div class="image-placeholder">ShopEase</div>{% endif %}
+      <span class="category-tag">{{ product.category }}</span>
+    </a>
+    <div class="product-info"><a class="product-name" href="{% url 'product_detail' product.slug %}">{{ product.name }}</a><div class="product-bottom"><strong>₹{{ product.price }}</strong><form method="post" action="{% url 'add_to_cart' product.id %}">{% csrf_token %}<input type="hidden" name="next" value="home"><button class="add-button" type="submit" {% if product.stock == 0 %}disabled{% endif %}>+</button></form></div></div>
+  </article>
+  {% empty %}<div class="empty-state"><h3>No products found</h3><p>Try another search term or check back soon.</p><a href="{% url 'home' %}" class="text-link">View all products</a></div>{% endfor %}
+</div>
+{% endblock %}
